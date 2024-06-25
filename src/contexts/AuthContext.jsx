@@ -7,24 +7,37 @@ const AuthContext = createContext();
 const AuthProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState(null);
-  const [token, setToken] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const login = (user, token) => {
-    setIsLoggedIn(true);
-    setUser(user);
-    setToken(token);
+  const login = async (payload) => {
     const from = location.state?.from?.pathname || "/";
-    navigate(from);
+    try {
+      const response = await instance.post(`/auth/login`, payload);
+      const user = response.data.user;
+      setUser(user);
+      setIsLoggedIn(true);
+      navigate(from);
+    } catch (error) {
+      console.error("Error fetching post:", error);
+    }
   };
 
-  const register = (user, token) => {
-    setIsLoggedIn(true);
-    setUser(user);
-    setToken(token);
+  const register = async (payload) => {
     const from = location.state?.from?.pathname || "/";
-    navigate(from);
+    try {
+      const response = await instance.post(`/auth/register`, payload, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      const user = response.data.user;
+      setUser(user);
+      setIsLoggedIn(true);
+      navigate(from);
+    } catch (error) {
+      console.error("Error fetching post:", error);
+    }
   };
 
   const logout = () => {

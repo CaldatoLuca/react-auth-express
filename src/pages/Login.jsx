@@ -2,13 +2,11 @@ import InputElement from "../components/InputElement";
 import useForm from "../hooks/useForm";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import axios from "axios";
 
 const Login = () => {
   const location = useLocation();
   const { login } = useAuth();
   const { message } = location.state || {};
-  const baseUrl = import.meta.env.VITE_SERVER_URL;
 
   const formFields = [
     { type: "email", name: "email", label: "Email" },
@@ -20,21 +18,10 @@ const Login = () => {
     password: "",
   });
 
-  const getUser = async () => {
-    try {
-      const response = await axios.post(`${baseUrl}/auth/login`, formValues);
-      const user = response.data.user;
-      const token = response.data.token;
-      login(user, token);
-    } catch (error) {
-      console.error("Error fetching post:", error);
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    getUser();
+    await login(formValues);
 
     resetForm();
   };

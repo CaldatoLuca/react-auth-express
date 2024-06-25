@@ -1,11 +1,9 @@
 import InputElement from "../components/InputElement";
 import useForm from "../hooks/useForm";
 import { useAuth } from "../contexts/AuthContext";
-import axios from "axios";
 
 const Register = () => {
   const { register } = useAuth();
-  const baseUrl = import.meta.env.VITE_SERVER_URL;
 
   const formFields = [
     { type: "text", name: "name", label: "Name" },
@@ -21,29 +19,10 @@ const Register = () => {
     password: "",
   });
 
-  const registerUser = async () => {
-    try {
-      const response = await axios.post(
-        `${baseUrl}/auth/register`,
-        formValues,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      const user = response.data.user;
-      const token = response.data.token;
-      register(user, token);
-    } catch (error) {
-      console.error("Error fetching post:", error);
-    }
-  };
-
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    registerUser();
+    await register(formValues);
 
     resetForm();
   };
