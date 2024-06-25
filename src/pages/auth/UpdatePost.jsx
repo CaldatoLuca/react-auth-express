@@ -150,6 +150,7 @@ const UpdatePost = () => {
             content={formValues.content}
             image={`${baseImgUrl}/posts/${formValues.image}`}
             tagsIds={formValues.tags}
+            from="put"
           ></PreviewCard>
         </div>
       </div>

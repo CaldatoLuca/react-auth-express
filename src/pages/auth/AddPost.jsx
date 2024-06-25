@@ -122,6 +122,7 @@ const AddPost = () => {
             content={formValues.content}
             image={formValues.image}
             tagsIds={formValues.tags}
+            from="add"
           ></PreviewCard>
         </div>
       </div>

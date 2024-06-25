@@ -1,14 +1,27 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../contexts/AuthContext";
 import { usePosts } from "../contexts/PostsContext";
 
-const PreviewCard = ({ title, content, image, tagsIds }) => {
+const PreviewCard = ({ title, content, image, tagsIds, from }) => {
   const baseImgUrl = import.meta.env.VITE_SERVER_IMAGE_URL;
   const { user } = useAuth();
   const [isExpanded, setIsExpanded] = useState(false);
   const { tags } = usePosts();
+  const [imageUrl, setImageUrl] = useState(null);
 
   const tagsList = tagsIds.map((tagId) => tags.find((tag) => tag.id === tagId));
+
+  useEffect(() => {
+    if (image && from === "add") {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImageUrl(reader.result);
+      };
+      reader.readAsDataURL(image);
+    } else if (from === "put") {
+      setImageUrl(image);
+    }
+  }, [image]);
 
   const toggleContent = () => {
     setIsExpanded(!isExpanded);
@@ -16,13 +29,14 @@ const PreviewCard = ({ title, content, image, tagsIds }) => {
 
   return (
     <div className="w-full rounded-lg shadow-2xl bg-slate-700 grid grid-cols-6">
-      {/* Colonna sinistra */}
+      {/* Left Column */}
       <div className="col-span-5 p-4">
-        {/* Titolo e contenuto */}
+        {/* Title */}
         <div className="mb-4 flex justify-between items-center">
-          <h3 className="text-2xl font-bold text-emerald-500 ">{title}</h3>
+          <h3 className="text-2xl font-bold text-emerald-500">{title}</h3>
         </div>
 
+        {/* Content */}
         <p className="mb-4">
           {isExpanded ? content : `${content.slice(0, 300)}...`}
           {content.length > 100 && (
@@ -32,10 +46,14 @@ const PreviewCard = ({ title, content, image, tagsIds }) => {
           )}
         </p>
 
-        {/* Immagine */}
-        {image && (
+        {/* Image */}
+        {imageUrl && (
           <figure className="w-full h-96 overflow-hidden flex justify-center items-center mb-4 rounded-md">
-            <img src={image} alt={`${title}-img`} />
+            <img
+              src={imageUrl}
+              alt={`${title}-img`}
+              className="w-full h-full object-cover"
+            />
           </figure>
         )}
 
@@ -60,7 +78,7 @@ const PreviewCard = ({ title, content, image, tagsIds }) => {
         </div>
       </div>
 
-      {/* Colonna di destra */}
+      {/* Right Column */}
       <div className="col-span-1 py-4 rounded-lg shadow-2xl bg-slate-600 flex justify-center items-center text-center">
         {/* Tags */}
         <ul>
