@@ -4,8 +4,8 @@ import InputElement from "../../components/InputElement";
 import useForm from "../../hooks/useForm";
 import instance from "../../utils/axiosClient";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../contexts/AuthContext";
 import { useParams } from "react-router-dom";
+import PreviewCard from "../../components/PreviewCard";
 
 const UpdatePost = () => {
   const { slug } = useParams();
@@ -13,7 +13,7 @@ const UpdatePost = () => {
   const { categories, tags, fetchPosts } = usePosts();
   const [err, setErr] = useState(false);
   const baseImgUrl = import.meta.env.VITE_SERVER_IMAGE_URL;
-  const { user } = useAuth();
+
   const navigate = useNavigate();
 
   const categoryOptions = [
@@ -145,64 +145,12 @@ const UpdatePost = () => {
 
         {/* Preview */}
         <div className="cols-span-1">
-          <div
-            className={`w-full rounded-lg shadow-2xl bg-slate-700 grid grid-cols-6`}
-          >
-            {/* Colonna sinistra */}
-            <div className="col-span-5 p-4">
-              {/* Titolo e contenuto */}
-              <div className="mb-4 flex justify-between items-center">
-                <h3 className="text-2xl font-bold text-emerald-500 ">
-                  {formValues.title}
-                </h3>
-              </div>
-
-              <p className="mb-4">{formValues.content}</p>
-
-              {/* Immagine */}
-              {formValues.image && (
-                <figure className="w-full h-96 overflow-hidden flex justify-center items-center mb-4 rounded-md">
-                  <img src={formValues.image} alt={`${formValues.title}-img`} />
-                </figure>
-              )}
-
-              {/* User */}
-              <div className="flex items-center justify-between">
-                <div className="flex items-center space-x-2">
-                  {user.image ? (
-                    <figure className="w-8 h-8 rounded-full overflow-hidden">
-                      <img
-                        src={`${baseImgUrl}/users/${user.image}`}
-                        alt={`user-${user.image}-img`}
-                        className="w-full h-full object-cover"
-                      />
-                    </figure>
-                  ) : (
-                    <div className="w-8 h-8 rounded-full overflow-hidden bg-emerald-600 flex  justify-center items-center">
-                      {user.name[0]}
-                    </div>
-                  )}
-                  <span className="text-slate-200">{user.name}</span>
-                </div>
-
-                <div className="bg-emerald-500 text-slate-200 p-1 rounded-md">
-                  {formValues.categoryId}
-                </div>
-              </div>
-            </div>
-
-            {/* Colonna di destra */}
-            <div className="col-span-1 py-4 rounded-lg shadow-2xl bg-slate-600 flex justify-center items-center text-center">
-              {/* Tags */}
-              <ul>
-                {formValues.tags.map((t, i) => (
-                  <li key={`tag${i}`} className="text-orange-400">
-                    #{tags.find((tag) => tag.id === t)?.name}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+          <PreviewCard
+            title={formValues.title}
+            content={formValues.content}
+            image={`${baseImgUrl}/posts/${formValues.image}`}
+            tagsIds={formValues.tags}
+          ></PreviewCard>
         </div>
       </div>
     </div>
