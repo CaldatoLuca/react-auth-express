@@ -55,7 +55,7 @@ const PostCard = ({
         {/* Immagine */}
         {image || image === "" ? (
           <figure className="w-full h-96 overflow-hidden flex justify-center items-center mb-4 rounded-md">
-            <img src={`${baseImgUrl}${image}`} alt={`${title}-img`} />
+            <img src={`${baseImgUrl}/posts/${image}`} alt={`${title}-img`} />
           </figure>
         ) : (
           ""
@@ -67,8 +67,8 @@ const PostCard = ({
             {user.image ? (
               <figure className="w-8 h-8 rounded-full overflow-hidden">
                 <img
-                  src={user.image}
-                  alt=""
+                  src={`${baseImgUrl}/users/${user.image}`}
+                  alt={`user-${user.image}-img`}
                   className="w-full h-full object-cover"
                 />
               </figure>

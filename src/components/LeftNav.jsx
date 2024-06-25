@@ -10,8 +10,8 @@ import { SiGoogletagmanager as ManagePosts } from "react-icons/si";
 import { FaPlus as AddPost } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import instance from "../utils/axiosClient";
 import { useEffect, useState } from "react";
+import { usePosts } from "../contexts/PostsContext";
 
 const LeftNav = () => {
   const { logout, isLoggedIn } = useAuth();
@@ -53,8 +53,7 @@ const LeftNav = () => {
       forLogIn: true,
     },
   ];
-  const [tags, setTags] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { tags } = usePosts();
 
   const navigate = useNavigate();
   const backNavigate = () => {
@@ -63,21 +62,6 @@ const LeftNav = () => {
   const forwardNavigate = () => {
     navigate(+1);
   };
-
-  const fetchTags = async () => {
-    try {
-      const response = await instance.get("/tags?page=1&limit=20");
-      setTags(response.data.tags);
-      setLoading(false);
-    } catch (error) {
-      console.error("Error fetching post:", error);
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchTags();
-  }, []);
 
   return (
     <div className="col-span-1 rounded-md">
@@ -126,29 +110,25 @@ const LeftNav = () => {
               ))}
           </ul>
 
-          {loading ? (
-            <div>Loading Tags...</div>
-          ) : (
-            <>
-              {tags.length === 0 ? (
-                <div>No Tags Found</div>
-              ) : (
-                <ul>
-                  <li className="text-orange-500 font-bold flex items-center gap-2">
-                    Trending Tags <Fire />
-                  </li>
+          <>
+            {tags.length === 0 ? (
+              <div>No Tags Found</div>
+            ) : (
+              <ul>
+                <li className="text-orange-500 font-bold flex items-center gap-2">
+                  Trending Tags <Fire />
+                </li>
 
-                  {tags.map((t, i) => (
-                    <Link key={`tag-${i}`} to={`/posts/${t.name}`}>
-                      <li className="hover:bg-orange-500 rounded-md hover:bg-opacity-70 cursor-pointer transition">
-                        #{t.name}
-                      </li>
-                    </Link>
-                  ))}
-                </ul>
-              )}
-            </>
-          )}
+                {tags.map((t, i) => (
+                  <Link key={`tag-${i}`} to={`/posts/${t.name}`}>
+                    <li className="hover:bg-orange-500 rounded-md hover:bg-opacity-70 cursor-pointer transition">
+                      #{t.name}
+                    </li>
+                  </Link>
+                ))}
+              </ul>
+            )}
+          </>
         </div>
       </div>
     </div>

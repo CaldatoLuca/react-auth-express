@@ -5,6 +5,8 @@ import { FaPlus as AddPost } from "react-icons/fa6";
 
 const Header = () => {
   const { isLoggedIn, logout, user } = useAuth();
+  const baseImgUrl = import.meta.env.VITE_SERVER_IMAGE_URL;
+
   return (
     <header className="sticky top-0 z-40 backdrop-blur border-b border-slate-50/[0.1]">
       <div className="flex justify-between items-center h-full py-4">
@@ -18,7 +20,7 @@ const Header = () => {
           </div>
         </Link>
 
-        <nav>
+        <nav className="flex items-center">
           {isLoggedIn ? (
             <ul className="flex items-center gap-5 text-slate-200">
               <li className="flex items-center gap-1">
@@ -45,6 +47,20 @@ const Header = () => {
                 <Link to={"/access/register"}>Sign Up</Link>
               </li>{" "}
             </ul>
+          )}
+
+          {user.image ? (
+            <figure className="w-8 h-8 rounded-full overflow-hidden ms-4">
+              <img
+                src={`${baseImgUrl}/users/${user.image}`}
+                alt={`user-${user.image}-img`}
+                className="w-full h-full object-cover"
+              />
+            </figure>
+          ) : (
+            <div className="w-8 h-8 rounded-full overflow-hidden bg-emerald-600 flex  justify-center items-center ms-4">
+              {user.name[0]}
+            </div>
           )}
         </nav>
       </div>

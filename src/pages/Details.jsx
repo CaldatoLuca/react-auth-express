@@ -49,7 +49,10 @@ const Details = () => {
 
         {post.image || post.image === "" ? (
           <figure className="w-full  overflow-hidden flex justify-center items-center mb-4 rounded-md">
-            <img src={`${baseImgUrl}${post.image}`} alt={`${post.title}-img`} />
+            <img
+              src={`${baseImgUrl}/posts/${post.image}`}
+              alt={`${post.title}-img`}
+            />
           </figure>
         ) : null}
 
