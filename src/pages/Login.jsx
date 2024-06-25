@@ -2,9 +2,11 @@ import InputElement from "../components/InputElement";
 import useForm from "../hooks/useForm";
 import { useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
+import { useState } from "react";
 
 const Login = () => {
   const location = useLocation();
+  const [err, setErr] = useState(false);
   const { login } = useAuth();
   const { message } = location.state || {};
 
@@ -21,7 +23,11 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await login(formValues);
+    try {
+      await login(formValues);
+    } catch (e) {
+      setErr(e.message);
+    }
 
     resetForm();
   };
@@ -46,6 +52,13 @@ const Login = () => {
             options={field.options}
           />
         ))}
+        {err ? (
+          <div className="text-center bg-red-500 rounded-md px-2 py-1">
+            {err}
+          </div>
+        ) : (
+          ""
+        )}
         <div>
           <button
             type="submit"

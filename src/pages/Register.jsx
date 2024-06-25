@@ -4,6 +4,7 @@ import { useAuth } from "../contexts/AuthContext";
 
 const Register = () => {
   const { register } = useAuth();
+  const [err, setErr] = useState(false);
 
   const formFields = [
     { type: "text", name: "name", label: "Name" },
@@ -22,7 +23,11 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    await register(formValues);
+    try {
+      await register(formValues);
+    } catch (e) {
+      setErr(e.message);
+    }
 
     resetForm();
   };
@@ -41,6 +46,13 @@ const Register = () => {
             options={field.options}
           />
         ))}
+        {err ? (
+          <div className="text-center bg-red-500 rounded-md px-2 py-1">
+            {err}
+          </div>
+        ) : (
+          ""
+        )}
         <div>
           <button
             type="submit"

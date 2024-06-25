@@ -14,12 +14,14 @@ const AuthProvider = ({ children }) => {
     const from = location.state?.from?.pathname || "/";
     try {
       const response = await instance.post(`/auth/login`, payload);
-      const user = response.data.user;
-      setUser(user);
+
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("accessToken", response.data.token);
+      setUser(response.data.user);
       setIsLoggedIn(true);
       navigate(from);
     } catch (error) {
-      console.error("Error fetching post:", error);
+      throw new Error(error.response.data.message);
     }
   };
 
@@ -31,12 +33,14 @@ const AuthProvider = ({ children }) => {
           "Content-Type": "multipart/form-data",
         },
       });
-      const user = response.data.user;
-      setUser(user);
+
+      localStorage.setItem("user", JSON.stringify(response.data.user));
+      localStorage.setItem("accessToken", response.data.token);
+      setUser(response.data.user);
       setIsLoggedIn(true);
       navigate(from);
     } catch (error) {
-      console.error("Error fetching post:", error);
+      throw new Error(error.response.data.message);
     }
   };
 
