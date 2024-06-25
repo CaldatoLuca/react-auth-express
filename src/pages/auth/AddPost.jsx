@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../contexts/AuthContext";
 
 const AddPost = () => {
-  const { categories, tags } = usePosts();
+  const { categories, tags, fetchPosts } = usePosts();
   const [err, setErr] = useState(false);
   const baseImgUrl = import.meta.env.VITE_SERVER_IMAGE_URL;
   const { user } = useAuth();
@@ -71,7 +71,7 @@ const AddPost = () => {
     try {
       await addPost();
       resetForm();
-      navigate("/admin/");
+      navigate("/admin", { state: { message: "Post created successfully" } });
     } catch (e) {
       setErr(e.message);
     }
@@ -109,6 +109,7 @@ const AddPost = () => {
               <button
                 type="submit"
                 className=" p-1 px-2 bg-neutral-100 text-neutral-900 mt-6 rounded-md"
+                onClick={() => fetchPosts()}
               >
                 Create
               </button>

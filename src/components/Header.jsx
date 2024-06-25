@@ -37,6 +37,21 @@ const Header = () => {
               <li className="hover:text-emerald-300 transition cursor-pointer ">
                 <button onClick={() => logout()}>Log Out</button>
               </li>{" "}
+              <li>
+                {user.image ? (
+                  <figure className="w-8 h-8 rounded-full overflow-hidden ">
+                    <img
+                      src={`${baseImgUrl}/users/${user.image}`}
+                      alt={`user-${user.image}-img`}
+                      className="w-full h-full object-cover"
+                    />
+                  </figure>
+                ) : (
+                  <div className="w-8 h-8 rounded-full overflow-hidden bg-emerald-600 flex  justify-center items-center ms-4">
+                    {user.name[0]}
+                  </div>
+                )}
+              </li>
             </ul>
           ) : (
             <ul className="flex items-center gap-5 text-slate-200">
@@ -47,20 +62,6 @@ const Header = () => {
                 <Link to={"/access/register"}>Sign Up</Link>
               </li>{" "}
             </ul>
-          )}
-
-          {user.image ? (
-            <figure className="w-8 h-8 rounded-full overflow-hidden ms-4">
-              <img
-                src={`${baseImgUrl}/users/${user.image}`}
-                alt={`user-${user.image}-img`}
-                className="w-full h-full object-cover"
-              />
-            </figure>
-          ) : (
-            <div className="w-8 h-8 rounded-full overflow-hidden bg-emerald-600 flex  justify-center items-center ms-4">
-              {user.name[0]}
-            </div>
           )}
         </nav>
       </div>

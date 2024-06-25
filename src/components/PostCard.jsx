@@ -9,7 +9,7 @@ const PostCard = ({
   tags,
   published,
   category,
-  userImg,
+
   slug,
   user,
 }) => {

@@ -10,7 +10,6 @@ import { SiGoogletagmanager as ManagePosts } from "react-icons/si";
 import { FaPlus as AddPost } from "react-icons/fa6";
 import { Link } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
-import { useEffect, useState } from "react";
 import { usePosts } from "../contexts/PostsContext";
 
 const LeftNav = () => {
