@@ -25,11 +25,10 @@ const Login = () => {
 
     try {
       await login(formValues);
+      resetForm();
     } catch (e) {
       setErr(e.message);
     }
-
-    resetForm();
   };
 
   return (

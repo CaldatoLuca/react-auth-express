@@ -25,11 +25,10 @@ const Register = () => {
 
     try {
       await register(formValues);
+      resetForm();
     } catch (e) {
       setErr(e.message);
     }
-
-    resetForm();
   };
 
   return (
