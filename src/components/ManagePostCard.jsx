@@ -1,5 +1,6 @@
 import { MdDeleteForever as Delete } from "react-icons/md";
 import { MdOutlineMode as Modify } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const ManagePostCard = ({ title, image, category, tags, slug, deletePost }) => {
   const baseImgUrl = import.meta.env.VITE_SERVER_IMAGE_URL;
@@ -7,9 +8,12 @@ const ManagePostCard = ({ title, image, category, tags, slug, deletePost }) => {
   return (
     <div className=" col-span-1 rounded-lg shadow-2xl bg-slate-700 p-4 flex flex-col ">
       <div className="flex bg-slate-800 rounded-lg p-2 mb-4 justify-between items-center">
-        <button className=" text-blue-400 text-xl">
+        <Link
+          className=" text-blue-400 text-xl"
+          to={`/admin/update-post/${slug}`}
+        >
           <Modify />
-        </button>
+        </Link>
         <span className="text-emerald-500 font-semibold">{category}</span>
         <button
           className=" text-red-400 text-xl"
