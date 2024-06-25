@@ -2,6 +2,7 @@ import { useState } from "react";
 import { usePosts } from "../../contexts/PostsContext";
 import InputElement from "../../components/InputElement";
 import useForm from "../../hooks/useForm";
+import instance from "../../utils/axiosClient";
 
 const AddPost = () => {
   const { categories, tags } = usePosts();
@@ -47,9 +48,28 @@ const AddPost = () => {
     image: null,
   });
 
-  const handleSubmit = (e) => {
+  const addPost = async (formValues) => {
+    try {
+      const response = await instance.post(`/posts`, formValues, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      fetchPosts();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    resetForm();
+
+    try {
+      await addPost();
+      resetForm();
+    } catch (e) {
+      setErr(e.message);
+    }
   };
 
   return (
