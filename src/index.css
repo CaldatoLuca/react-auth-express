@@ -1,0 +1,10 @@
+/* src/index.css */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  display: block;
+}
