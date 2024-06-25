@@ -5,8 +5,14 @@ import instance from "../utils/axiosClient";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [user, setUser] = useState(null);
+  const [isLoggedIn, setIsLoggedIn] = useState(() => {
+    const accessToken = localStorage.getItem("accessToken");
+    if (accessToken) return true;
+    return false;
+  });
+  const [user, setUser] = useState(() => {
+    return JSON.parse(localStorage.getItem("user")) || null;
+  });
   const navigate = useNavigate();
   const location = useLocation();
 
